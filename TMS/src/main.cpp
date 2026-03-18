@@ -12,4 +12,6 @@ void setup() {
 
 void loop() {
   connectionManager.try_reconnect();
+  delay(5000);
+  connectionManager.send_msg("75");
 }

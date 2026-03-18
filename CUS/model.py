@@ -1,8 +1,7 @@
 from enum import StrEnum
 import logging
 
-logger = logging.getLogger(__name__)  
-
+logger = logging.getLogger(__name__)
 
 class Mode(StrEnum):
     AUTOMATIC = "AUTOMATIC"

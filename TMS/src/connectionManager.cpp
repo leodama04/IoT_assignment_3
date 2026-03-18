@@ -36,6 +36,7 @@ void ConnectionManagerClass::try_reconnect() {
         if (client.connect(clientId.c_str())) {
             Serial.println("connected");
             client.subscribe(MQTT_TOPIC);
+            Serial.println(String("subscribed to ") + MQTT_TOPIC);
         } else {
             Serial.print("failed, rc=");
             Serial.print(client.state());
@@ -47,6 +48,7 @@ void ConnectionManagerClass::try_reconnect() {
 
 void ConnectionManagerClass::send_msg(char *msg){
     char message[MSG_BUFFER_SIZE];
+    Serial.println(String("Sending msg:") + message);
     snprintf (message, MSG_BUFFER_SIZE, msg);
     client.publish(MQTT_TOPIC, message); 
 }

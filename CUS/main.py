@@ -17,6 +17,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
+logging.getLogger("model").setLevel(logging.DEBUG)
 
 config: Config = Config()
 logger = logging.getLogger(__name__)  

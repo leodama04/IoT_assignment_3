@@ -27,6 +27,7 @@ class MqttConnectionManager():
             logger.error(f"MQTT connection failed: {e}")
 
     async def on_message(self, msg: aiomqtt.Message):
+        logger.info(f"MQTT message arrived: {msg.payload.decode('utf-8')}")
         try:
             water_level = float(msg.payload.decode("utf-8"))
             self.state.set_water_level(water_level)
