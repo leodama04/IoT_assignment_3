@@ -27,7 +27,6 @@ void ConnectionManagerClass::setup_mqtt_connection() {
     else{
         Serial.println("not connected to server");
     }
-    
 }
 
 void ConnectionManagerClass::try_reconnect() {

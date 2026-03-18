@@ -6,7 +6,7 @@ import asyncio
 
 logger = logging.getLogger(__name__)  
 
-class ConnectionManager:
+class WebsocketConnectionManager:
     def __init__(self, state : State):
         self.active_connections: Set[WebSocket] = set()
         self.state = state
