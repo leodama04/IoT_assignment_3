@@ -1,5 +1,6 @@
 import asyncio
 import aiomqtt
+import json
 import logging
 from model import State
 
@@ -29,9 +30,10 @@ class MqttConnectionManager():
     async def on_message(self, msg: aiomqtt.Message):
         logger.info(f"MQTT message arrived: {msg.payload.decode('utf-8')}")
         try:
-            water_level = float(msg.payload.decode("utf-8"))
-            self.state.set_water_level(water_level)
-        except ValueError:
+            parsed = json.loads(msg.payload.decode("utf-8"))
+            if parsed["type"] == "water_level":
+                self.state.set_water_level(float(parsed["value"]))
+        except (ValueError, KeyError, json.JSONDecodeError):
             logger.warning(f"Payload non valido: {msg.payload}")
 
     async def stop(self):

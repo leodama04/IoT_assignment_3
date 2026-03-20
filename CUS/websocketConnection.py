@@ -3,6 +3,7 @@ from typing import Set
 from model import State, Mode
 import logging
 import asyncio
+import json
 
 logger = logging.getLogger(__name__)  
 
@@ -14,18 +15,19 @@ class WebsocketConnectionManager:
     async def connect(self, websocket: WebSocket):
         await websocket.accept()
         self.active_connections.add(websocket)
-        await self.broadcast(self.state.mode)
-        logger.info(f"Client connesso. Connessioni attive: {len(self.active_connections)}")
+        await self.broadcast("mode", self.state.mode) 
+        await self.broadcast("water_level", self.state.water_level)
         await self.handle_msg(websocket)
 
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
         logger.info(f"Client disconnesso. Connessioni attive: {len(self.active_connections)}")
 
-    async def broadcast(self, message: str):
-        logger.info(f"Server invia a tutti: '{message}'")
+    async def broadcast(self, message_type: str, value):
+        payload = json.dumps({"type": message_type, "value": value})
+        logger.info(f"Server invia a tutti: '{payload}'")
         for connection in self.active_connections:
-            await connection.send_text(message)
+            await connection.send_text(payload)
 
     async def handle_msg(self, websocket : WebSocket):
         try:
@@ -33,14 +35,19 @@ class WebsocketConnectionManager:
                 data = await websocket.receive_text()
                 logger.info(f"Browser invia: '{data}'")
                 asyncio.create_task(self.process_data(data))
-                await self.broadcast(data)
         except WebSocketDisconnect:
             self.disconnect(websocket)
 
     async def process_data(self, data: str):
-        if(data == Mode.AUTOMATIC):
-            self.state.set_mode(Mode.AUTOMATIC)
-        elif(data == Mode.REMOTE_MANUAL):
-            self.state.set_mode(Mode.REMOTE_MANUAL)
-
+        parsed = json.loads(data)
+        if parsed["type"] == "mode":
+            mode = parsed["value"]
+            if mode == Mode.AUTOMATIC:
+                self.state.set_mode(Mode.AUTOMATIC)
+            elif mode == Mode.REMOTE_MANUAL:
+                self.state.set_mode(Mode.REMOTE_MANUAL)
+            await self.broadcast("mode", mode)  
+    
+    def handle_water_level_change(self, water_level: float):
+        asyncio.create_task(self.broadcast("water_level", water_level))
         

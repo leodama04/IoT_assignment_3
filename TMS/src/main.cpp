@@ -5,13 +5,15 @@ ConnectionManagerClass connectionManager;
 
 void setup() {
   Serial.begin(9600);
-  connectionManager.setup_wifi();
-  connectionManager.setup_mqtt_connection();
-  connectionManager.try_reconnect();
+  connectionManager.setupWifi();
+  connectionManager.setupMqttConnection();
+  connectionManager.tryReconnect();
 }
 
 void loop() {
-  connectionManager.try_reconnect();
+  connectionManager.tryReconnect();
   delay(5000);
-  connectionManager.send_msg("75");
+  connectionManager.sendWaterLevel(75.00);
+  delay(5000);
+  connectionManager.sendWaterLevel(15.00);
 }

@@ -8,7 +8,7 @@
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-void ConnectionManagerClass::setup_wifi() {
+void ConnectionManagerClass::setupWifi() {
     Serial.println(String("Connecting to ") + WIFI_NAME);
     WiFi.mode(WIFI_STA);
     WiFi.begin(WIFI_NAME, WIFI_PW);
@@ -19,7 +19,7 @@ void ConnectionManagerClass::setup_wifi() {
     Serial.println("WiFi connected");
 }
 
-void ConnectionManagerClass::setup_mqtt_connection() {
+void ConnectionManagerClass::setupMqttConnection() {
     client.setServer(MQTT_SERVER_NAME, MQTT_PORT);
     if(client.connected()){
         Serial.println("connected to server");
@@ -29,7 +29,7 @@ void ConnectionManagerClass::setup_mqtt_connection() {
     }
 }
 
-void ConnectionManagerClass::try_reconnect() {
+void ConnectionManagerClass::tryReconnect() {
     if (!client.connected()) {
         Serial.print("Attempting MQTT connection...");
         String clientId = String("iot-client-")+String(random(0xffff), HEX);
@@ -46,9 +46,9 @@ void ConnectionManagerClass::try_reconnect() {
     }
 }
 
-void ConnectionManagerClass::send_msg(char *msg){
+void ConnectionManagerClass::sendWaterLevel(float waterLevel){
     char message[MSG_BUFFER_SIZE];
+    snprintf(message, MSG_BUFFER_SIZE, "{\"type\":\"water_level\",\"value\":%.2f}", waterLevel);
     Serial.println(String("Sending msg:") + message);
-    snprintf (message, MSG_BUFFER_SIZE, msg);
     client.publish(MQTT_TOPIC, message); 
 }

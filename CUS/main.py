@@ -27,6 +27,8 @@ state = State()
 websocket_manager = WebsocketConnectionManager(state)
 mqtt_manager = MqttConnectionManager(config.broker, config.topic, state)
 
+state.set_callable(websocket_manager.handle_water_level_change)
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info(f"Connecting to broker: {config.broker}, topic: {config.topic}")

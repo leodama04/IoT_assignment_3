@@ -6,10 +6,10 @@
 class ConnectionManagerClass {
     
 public:
-    void setup_wifi();
-    void setup_mqtt_connection();
-    void try_reconnect();
-    void send_msg(char *msg);
+    void setupWifi();
+    void setupMqttConnection();
+    void tryReconnect();
+    void sendWaterLevel(float waterLevel);
 };
 
 #endif
