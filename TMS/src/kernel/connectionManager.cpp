@@ -52,3 +52,7 @@ void ConnectionManagerClass::sendWaterLevel(float waterLevel){
     Serial.println(String("Sending msg:") + message);
     client.publish(MQTT_TOPIC, message); 
 }
+
+bool ConnectionManagerClass::isConnected() {
+    return client.connected();
+}

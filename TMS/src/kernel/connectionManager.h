@@ -10,6 +10,7 @@ public:
     void setupMqttConnection();
     void tryReconnect();
     void sendWaterLevel(float waterLevel);
+    bool isConnected();
 };
 
 #endif
