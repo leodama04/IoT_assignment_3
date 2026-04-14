@@ -34,7 +34,7 @@ class MqttConnectionManager():
             if parsed["type"] == "water_level":
                 self.state.set_water_level(float(parsed["value"]))
         except (ValueError, KeyError, json.JSONDecodeError):
-            logger.warning(f"Payload non valido: {msg.payload}")
+            logger.warning(f"Invalid payload: {msg.payload}")
 
     async def stop(self):
         if self.task:

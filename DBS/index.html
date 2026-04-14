@@ -7,16 +7,21 @@
     <link href="/dbs/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <h2>Controllo Modalità</h2>
+    <h2>Water tank control dashboard</h2>
     
-    <div id="status">Stato: <span style="color: gray;">In connessione...</span></div>
-    <div class="current-mode">Modalità attiva: <span id="mode-text">Sconosciuta</span></div>
-    <div class="water-level">Livello acqua: <span id="water-level-text">Sconosciuto</span></div>
+    <div id="status">Status: <span style="color: gray;">Connecting...</span></div>
+    <div class="current-mode">Active Mode: <span id="mode-text">Unknown</span></div>
+    <div class="water-level">Current water level: <span id="water-level-text">Unknown</span></div>
     <div class="controls">
-        <button class="btn-auto" onclick="sendMode('AUTOMATIC')" id="btn-auto">MODALITÀ AUTOMATICA</button>
+        <button class="btn-auto" onclick="sendMode('AUTOMATIC')" id="btn-auto">AUTOMATIC MODE</button>
         <button class="btn-manual" onclick="sendMode('REMOTE_MANUAL')" id="btn-manual">REMOTE MANUAL</button>
     </div>
+    <div class="chart-container">
+        <h3>Water Level chart (last measurements)</h3>
+        <canvas id="waterLevelChart" width="700" height="300"></canvas>
+    </div>
     <div id="log"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="/dbs/js/app.js"></script>
 </body>
 </html>

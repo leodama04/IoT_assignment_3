@@ -19,6 +19,8 @@ void TmsManagerTask::tick() {
             if(!connectionManager->isConnected()) {
                 this->state = UNCONNECTED;
             }
+            delay(1000);
+            connectionManager->sendWaterLevel((rand() / (float)RAND_MAX) * 80.0f);
             break;
     }
 }

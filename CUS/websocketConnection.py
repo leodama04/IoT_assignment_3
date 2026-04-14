@@ -21,11 +21,11 @@ class WebsocketConnectionManager:
 
     def disconnect(self, websocket: WebSocket):
         self.active_connections.remove(websocket)
-        logger.info(f"Client disconnesso. Connessioni attive: {len(self.active_connections)}")
+        logger.info(f"Client disconnected. Active connections: {len(self.active_connections)}")
 
     async def broadcast(self, message_type: str, value):
         payload = json.dumps({"type": message_type, "value": value})
-        logger.info(f"Server invia a tutti: '{payload}'")
+        logger.info(f"Broadcasting to all clients: '{payload}'")
         for connection in self.active_connections:
             await connection.send_text(payload)
 
@@ -33,7 +33,7 @@ class WebsocketConnectionManager:
         try:
             while True:
                 data = await websocket.receive_text()
-                logger.info(f"Browser invia: '{data}'")
+                logger.info(f"Received from client: '{data}'")
                 asyncio.create_task(self.process_data(data))
         except WebSocketDisconnect:
             self.disconnect(websocket)
@@ -49,5 +49,8 @@ class WebsocketConnectionManager:
             await self.broadcast("mode", mode)  
     
     def handle_water_level_change(self, water_level: float):
-        asyncio.create_task(self.broadcast("water_level", water_level))
-        
+        try:
+            asyncio.create_task(self.broadcast("water_level", water_level))
+        except RuntimeError:
+            logger.warning("Could not create task for water level change (event loop might be closing)")
+    

@@ -2,8 +2,9 @@ import sys
 import asyncio
 import logging
 import uvicorn
+import os
 
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI, WebSocket, Response
 from fastapi.staticfiles import StaticFiles
 from websocketConnection import WebsocketConnectionManager
 from mqttConnection import MqttConnectionManager
@@ -34,8 +35,11 @@ async def lifespan(app: FastAPI):
     logger.info(f"Connecting to broker: {config.broker}, topic: {config.topic}")
     await mqtt_manager.start()
     yield
+    logger.info("Shutting down...")
     await mqtt_manager.stop()
+    logger.info("MQTT Shutted down...")
 
+    
 app = FastAPI(lifespan=lifespan)
 
 app.mount("/dbs", StaticFiles(directory="../DBS"))
@@ -58,17 +62,27 @@ async def websocket_endpoint(websocket: WebSocket):
     
 if __name__ == "__main__":
     if sys.platform == "win32":
-        # Su Windows, uvicorn usa di default il ProactorEventLoop che non supporta
-        # add_reader/add_writer usati da aiomqtt. Forziamo il SelectorEventLoop
-        # creando manualmente il loop prima che uvicorn lo faccia.
+        # On Windows, uvicorn uses ProactorEventLoop by default which doesn't support
+        # add_reader/add_writer used by aiomqtt. We force the SelectorEventLoop
+        # by manually creating the loop before uvicorn does.
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        config_uvicorn = uvicorn.Config(app, host=config.host, port=config.port)
+        config_uvicorn = uvicorn.Config(
+            app,
+            host=config.host,
+            port=config.port,
+            timeout_graceful_shutdown=1
+        )
         server = uvicorn.Server(config_uvicorn)
         try:
             loop.run_until_complete(server.serve())
         except KeyboardInterrupt:
-            pass  # Uscita pulita con CTRL+C
+            logger.info("CTRL+C detected, exiting...")
+        finally:
+            loop.close()
+            logger.info("Server shut down.")
+            # Force exit immediately to avoid hanging threads
+            os._exit(0)
     else:
         uvicorn.run(app, host=config.host, port=config.port)
