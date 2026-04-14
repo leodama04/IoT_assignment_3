@@ -16,6 +16,9 @@ void TmsManagerTask::tick() {
             }
             break;
         case CONNECTED:
+            if(!connectionManager->isConnected()) {
+                this->state = UNCONNECTED;
+            }
             break;
     }
 }
