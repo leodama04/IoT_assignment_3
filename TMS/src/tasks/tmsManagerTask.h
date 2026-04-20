@@ -2,13 +2,13 @@
 #define __TMS_MANAGER_TASK__
 
 #include "kernel/task.h"
-#include "devices/Sonar.h"
+#include "devices/ProximitySensor.h"
 #include "kernel/connectionManager.h"
 
 class TmsManagerTask: public Task {
 
 public:
-    TmsManagerTask();
+    TmsManagerTask(ProximitySensor* sonar);
 
 protected:
     void tick() override;
@@ -17,6 +17,7 @@ private:
     enum State {UNCONNECTED, CONNECTED};
     State state;
     ConnectionManagerClass* connectionManager;
+    ProximitySensor* sonar;
 };
 
 #endif

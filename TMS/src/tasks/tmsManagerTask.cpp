@@ -1,6 +1,7 @@
 #include "tmsManagerTask.h"
 
-TmsManagerTask::TmsManagerTask() {
+TmsManagerTask::TmsManagerTask(ProximitySensor* sonar) {
+    this->sonar = sonar;
     this->connectionManager = new ConnectionManagerClass();
     this->state = UNCONNECTED;
 }
@@ -20,7 +21,8 @@ void TmsManagerTask::tick() {
                 this->state = UNCONNECTED;
             }
             delay(1000);
-            connectionManager->sendWaterLevel((rand() / (float)RAND_MAX) * 80.0f);
+            connectionManager->sendWaterLevel(sonar->getDistance());
+            //connectionManager->sendWaterLevel((rand() / (float)RAND_MAX) * 80.0f);
             break;
     }
 }
