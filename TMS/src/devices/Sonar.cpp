@@ -26,7 +26,7 @@ float Sonar::getDistance(){
         return NO_OBJ_DETECTED;
     } else {
         float t = tUS / 2e6;
-        float d = t*getSoundSpeed();
+        float d = t*getSoundSpeed() * 100;
         return d;  
     }
 }
