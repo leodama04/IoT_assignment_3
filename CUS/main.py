@@ -8,6 +8,7 @@ from fastapi import FastAPI, WebSocket, Response
 from fastapi.staticfiles import StaticFiles
 from websocketConnection import WebsocketConnectionManager
 from mqttConnection import MqttConnectionManager
+from serialConnection import SerialConnectionManager
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from contextlib import asynccontextmanager
@@ -23,12 +24,14 @@ logging.getLogger("model").setLevel(logging.DEBUG)
 config: Config = Config()
 logger = logging.getLogger(__name__)  
 
-
 state = State()
 websocket_manager = WebsocketConnectionManager(state)
 mqtt_manager = MqttConnectionManager(config.broker, config.topic, state)
+serial_manager = SerialConnectionManager(config.serial_port, config.serial_baudrate, state)
 
-state.set_callable(websocket_manager.handle_water_level_change)
+state.set_callable(websocket_manager.handle_water_level_change, 
+                   serial_manager.send_mode, 
+                   serial_manager.send_valve_state)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

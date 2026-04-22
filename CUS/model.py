@@ -22,18 +22,23 @@ class State():
         self.l1_time: float = None  
         self.valve_state: float = 0  
 
-    def set_callable(self, on_water_level_change: Callable[[], None]):
+    def set_callable(self, on_water_level_change: Callable[[], None],
+                        on_mode_change: Callable[[], None] = None,
+                        on_valve_state_change: Callable[[], None] = None):
         self.on_water_level_change: Callable[[], None] = on_water_level_change
+        self.on_mode_change: Callable[[], None] = on_mode_change
+        self.on_valve_state_change: Callable[[], None] = on_valve_state_change
 
     def set_mode(self, mode: Mode):
         logger.debug(f"Mode change. From [{self.mode}] to [{mode}]")
+        self.on_mode_change(mode)
         self.mode = mode
 
     def automatic_monitor_water_level(self, level: float):
         current_time = time.time()
         if level >= L2:
             logger.warning(f"Water level {level} exceeded critical threshold L2 ({L2}). Opening valve to 100%")
-            # TODO: VALVE_CONTROL - Open water channel at 100%
+            self.on_valve_state_change(100)
             self.valve_state = 100
             self.l1_time = None            
         elif level > L1:
@@ -45,12 +50,12 @@ class State():
                     time_elapsed = current_time - self.l1_time
                     if time_elapsed >= T1:
                         logger.warning(f"Water level {level} exceeded ({L1}) for {time_elapsed:.1f}s (>= {T1}s). Opening valve to 50%")
-                        # TODO: VALVE_CONTROL - Open water channel at 50%
+                        self.on_valve_state_change(50)
                         self.valve_state = 50               
         else:
             if self.valve_state > 0:
                 logger.info(f"Water level {level} below ({L1}). Closing valve...")
-                # TODO: VALVE_CONTROL - Close water channel (0%)
+                self.on_valve_state_change(0)
                 self.valve_state = 0
             self.l1_time = None  
 

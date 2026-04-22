@@ -9,3 +9,7 @@ class Config:
     # Uvicorn
     host: str = "localhost"
     port: int = 8000
+
+    # Serial 
+    serial_port: str = "COM3"
+    serial_baudrate: int = 9600
