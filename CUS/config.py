@@ -11,5 +11,5 @@ class Config:
     port: int = 8000
 
     # Serial 
-    serial_port: str = "COM3"
+    serial_port: str = "COM4"
     serial_baudrate: int = 9600
