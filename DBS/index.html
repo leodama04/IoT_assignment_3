@@ -12,6 +12,11 @@
     <div id="status">Status: <span style="color: gray;">Connecting...</span></div>
     <div class="current-mode">Active Mode: <span id="mode-text">Unknown</span></div>
     <div class="water-level">Current water level: <span id="water-level-text">Unknown</span></div>
+    <div class="valve-state">Valve state: <span id="valve-state-text">Unknown</span>
+        <div class="valve-bar-container">
+            <div id="valve-bar" class="valve-bar" style="width: 0%;"></div>
+        </div>
+    </div>
     <div class="controls">
         <button class="btn-auto" onclick="sendMode('AUTOMATIC')" id="btn-auto">AUTOMATIC MODE</button>
         <button class="btn-manual" onclick="sendMode('REMOTE_MANUAL')" id="btn-manual">REMOTE MANUAL</button>

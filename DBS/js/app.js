@@ -7,6 +7,8 @@ const modeText = document.getElementById('mode-text');
 const btnAuto = document.getElementById('btn-auto');
 const btnManual = document.getElementById('btn-manual');
 const waterLevelText = document.getElementById('water-level-text');
+const valveStateText = document.getElementById('valve-state-text');
+const valveBar = document.getElementById('valve-bar');
 
 const maxMeasurements = 20;
 let waterLevelData = [];
@@ -110,6 +112,16 @@ function updateWaterLevel(currentWaterLevel) {
     addMeasurement(currentWaterLevel);
 }
 
+function updateValveState(value) {
+    const pct = Math.min(100, Math.max(0, value));
+    valveStateText.innerText = `${pct}%`;
+    valveBar.style.width = `${pct}%`;
+    // Color: green when closed (0%), red when fully open (100%)
+    const r = Math.round(255 * pct / 100);
+    const g = Math.round(200 * (1 - pct / 100));
+    valveBar.style.backgroundColor = `rgb(${r}, ${g}, 50)`;
+}
+
 function connect() {
     socket = new WebSocket(socketURL);
     socket.onopen = () => {
@@ -123,6 +135,8 @@ function connect() {
             updateMode(receivedData.value);
         } else if (receivedData.type === "water_level") {
             updateWaterLevel(receivedData.value);
+        } else if (receivedData.type === "valve_state") {
+            updateValveState(receivedData.value);
         }
     };
     socket.onclose = () => {
@@ -132,7 +146,7 @@ function connect() {
         addLog("Connection lost. Reconnecting...");
         setTimeout(connect, 3000);
     };
-    socket.onerror = (error) => {
+    socket.onerror = () => {
         addLog("WebSocket error.");
     };
 }
@@ -145,7 +159,6 @@ function sendMode(mode) {
     }
 }
 
-// Initialize chart with a delay to ensure Chart.js library is loaded
 setTimeout(() => {
     if (typeof Chart !== 'undefined' && !chart) {
         initChart();
