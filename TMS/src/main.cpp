@@ -13,15 +13,14 @@ ConnectionManagerClass* connectionManager = new ConnectionManagerClass();
 
 void setup() {
   Serial.begin(9600);
-  /*TmsManagerTask* tmsManagerTask = new TmsManagerTask(sonar);
+  TmsManagerTask* tmsManagerTask = new TmsManagerTask(sonar);
   tmsManagerTask->init(200);
   tmsManagerTask->start("TmsTask", 10000, 1, 0);
-  */
   delay(2000);
 }
 
 void loop() {
-  while(!connectionManager->isConnected()) {
+  /*while(!connectionManager->isConnected()) {
     connectionManager->setupWifi();
     connectionManager->setupMqttConnection();
     connectionManager->tryReconnect();
@@ -48,5 +47,5 @@ void loop() {
   delay(1000);
   connectionManager->sendWaterLevel(70.5);
   delay(2000);
-
+  */
 }
