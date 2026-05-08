@@ -20,7 +20,6 @@ void TmsManagerTask::tick() {
             if(!connectionManager->isConnected()) {
                 this->state = UNCONNECTED;
             }
-            delay(1000);
             connectionManager->sendWaterLevel(sonar->getDistance());
             break;
     }
