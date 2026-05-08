@@ -22,7 +22,6 @@ void TmsManagerTask::tick() {
             }
             delay(1000);
             connectionManager->sendWaterLevel(sonar->getDistance());
-            //connectionManager->sendWaterLevel((rand() / (float)RAND_MAX) * 80.0f);
             break;
     }
 }

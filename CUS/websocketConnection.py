@@ -53,4 +53,10 @@ class WebsocketConnectionManager:
             asyncio.create_task(self.broadcast("water_level", water_level))
         except RuntimeError:
             logger.warning("Could not create task for water level change (event loop might be closing)")
+
+    def handle_valve_state_change(self, valve_state: float):
+        try:
+            asyncio.create_task(self.broadcast("valve_state", valve_state))
+        except RuntimeError:
+            logger.warning("Could not create task for valve state change (event loop might be closing)")
     

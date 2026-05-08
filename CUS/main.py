@@ -31,16 +31,19 @@ serial_manager = SerialConnectionManager(config.serial_port, config.serial_baudr
 
 state.set_callable(websocket_manager.handle_water_level_change, 
                    serial_manager.send_mode, 
-                   serial_manager.send_valve_state)
+                   serial_manager.send_valve_state,
+                   websocket_manager.handle_valve_state_change)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info(f"Connecting to broker: {config.broker}, topic: {config.topic}")
     await mqtt_manager.start()
+    await serial_manager.connect()
     yield
     logger.info("Shutting down...")
     await mqtt_manager.stop()
     logger.info("MQTT Shutted down...")
+    await serial_manager.close()
 
     
 app = FastAPI(lifespan=lifespan)
