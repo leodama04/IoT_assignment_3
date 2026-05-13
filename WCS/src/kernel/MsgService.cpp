@@ -1,6 +1,5 @@
 #include "Arduino.h"
 #include "MsgService.h"
-#include "model/global.h"
 #include <ArduinoJson.h>
 
 String content;
@@ -67,38 +66,23 @@ Msg* MsgServiceClass::receiveMsg(Pattern& pattern){
     } 
 }
 
-void MsgServiceClass::sendValveState() {
-    if (valve != NULL) {
-        int percentage = valve->getOpenPercentage();
-        float valveState = percentage;  
-        StaticJsonDocument<128> doc;
-        doc["valve_state"] = valveState;
-        String output;
-        serializeJson(doc, output);
-        MsgService.sendMsg(output);
-    }
+void MsgServiceClass::sendValveState(int valvePerc) {
+    float valveState = valvePerc;  
+    StaticJsonDocument<128> doc;
+    doc["valve_state"] = valveState;
+    String output;
+    serializeJson(doc, output);
+    MsgService.sendMsg(output);
 }
 
 void MsgServiceClass::sendMode() {
     Serial.println("");
 }
 
-enum Command {
-    CMD_MODE,
-    CMD_VALVE_STATE,
-    CMD_UNKNOWN
-};
-
-struct ParsedMsg {
-    Command cmd;
-    String type;
-    float value;
-};
-
 static ParsedMsg parseCommand(String content){
     ParsedMsg result;
     result.cmd = CMD_UNKNOWN;
-    result.value = 0;
+    result.value = "";
     StaticJsonDocument<256> doc;
     DeserializationError error = deserializeJson(doc, content);
     if (error) {
@@ -108,38 +92,20 @@ static ParsedMsg parseCommand(String content){
     if (strcmp(type, "mode") == 0) {
         result.cmd = CMD_MODE;
         result.type = "mode";
-        result.value = doc["value"];
+        result.value = doc["value"].as<String>();   
     } else if (strcmp(type, "valve_state") == 0) {
         result.cmd = CMD_VALVE_STATE;
         result.type = "valve_state";
-        result.value = doc["value"];
+        result.value = String(doc["value"].as<float>());
     }
     return result;
 }
 
-void MsgServiceClass::handleMessage() {
-    if (MsgService.isMsgAvailable()){
-        Msg* m = MsgService.receiveMsg();
-        if (m == NULL) return;
-        String content = m->getContent();
-        ParsedMsg parsedMsg = parseCommand(content);
-        switch(parsedMsg.cmd){
-            case CMD_MODE:
-                MsgService.sendMode();
-                break;
-            case CMD_VALVE_STATE:
-                if (valve != NULL) {
-                    int percentage = (int)parsedMsg.value;
-                    if(percentage != valve->getOpenPercentage()) {
-                        valve->open(percentage);
-                        this->sendValveState();
-                    }
-                }
-                break;
-            case CMD_UNKNOWN:
-            default:
-                break;
-        }
-        delete m;
-    }
+ParsedMsg MsgServiceClass::handleMessage() {
+    Msg* m = MsgService.receiveMsg();
+    if (m == NULL) return;
+    String content = m->getContent();
+    ParsedMsg parsedMsg = parseCommand(content);
+    delete m;
+    return parsedMsg;
 }

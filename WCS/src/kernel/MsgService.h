@@ -2,6 +2,7 @@
 #define __MSGSERVICE__
 
 #include "Arduino.h"
+#include "model/global.h"
 
 class Msg {
   String content;
@@ -24,7 +25,6 @@ public:
 class MsgServiceClass {
 
 private:
-  bool isMsgAvailable();
   Msg* receiveMsg();
   bool isMsgAvailable(Pattern& pattern);
   Msg* receiveMsg(Pattern& pattern);
@@ -32,10 +32,10 @@ private:
 public:
   Msg* currentMsg;
   bool msgAvailable;
-  
+  bool isMsgAvailable();
   void init();  
-  void handleMessage();
-  void sendValveState();
+  ParsedMsg handleMessage();
+  void sendValveState(int valvePerc);
   void sendMode();
 };
 
