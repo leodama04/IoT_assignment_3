@@ -95,12 +95,15 @@ function addLog(msg) {
 
 function updateMode(currentMode) {
     modeText.innerText = currentMode;
+    const valveControl = document.getElementById('valve-control');
     if (currentMode === 'AUTOMATIC') {
-        btnAuto.disabled = true;    
-        btnManual.disabled = false;   
+        btnAuto.disabled = true;
+        btnManual.disabled = false;
+        valveControl.style.display = 'none';
     } else if (currentMode === 'MANUAL') {
         btnAuto.disabled = false;
-        btnManual.disabled = true;  
+        btnManual.disabled = true;
+        valveControl.style.display = 'block';
     }
 }
 
@@ -158,6 +161,19 @@ function sendMode(mode) {
         addLog(`Request sent: ${mode}`);
     }
 }
+
+function sendValveState() {
+    const val = parseInt(document.getElementById('valve-slider').value);
+    if (socket && socket.readyState === WebSocket.OPEN) {
+        const message = JSON.stringify({ type: "valve_state", value: val });
+        socket.send(message);
+        addLog(`Valve state sent: ${val}%`);
+    }
+}
+
+document.getElementById('valve-slider').addEventListener('input', function() {
+    document.getElementById('valve-slider-value').innerText = `${this.value}%`;
+});
 
 setTimeout(() => {
     if (typeof Chart !== 'undefined' && !chart) {

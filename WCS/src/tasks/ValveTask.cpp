@@ -30,8 +30,13 @@ void ValveTask::tick() {
                         break;
                     }
                     case CMD_VALVE_STATE:
-                        // In manuale, ignora il comando valve state? Oppure gestiscilo
-                        // Ad esempio, non fare nulla o eventualmente segnala errore
+                        if (valve != NULL) {
+                            int percent = msg.value.toInt();
+                            if (valve->getOpenPercentage() != percent) {
+                                valve->open(percent);
+                                MsgService.sendValveState(valve->getOpenPercentage());
+                            }
+                        }
                         break;
                     case CMD_UNKNOWN:
                         // ignora

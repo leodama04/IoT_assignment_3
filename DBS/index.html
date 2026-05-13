@@ -17,6 +17,14 @@
             <div id="valve-bar" class="valve-bar" style="width: 0%;"></div>
         </div>
     </div>
+    <div class="valve-control" id="valve-control" style="display:none;">
+    <label for="valve-slider">Manual valve control:</label>
+    <div style="display:flex; align-items:center; gap:12px;">
+        <input type="range" id="valve-slider" min="0" max="100" step="1" value="0" style="flex:1; max-width:300px;">
+        <span id="valve-slider-value">0%</span>
+        <button id="btn-send-valve" onclick="sendValveState()">Apply</button>
+    </div>
+    </div>
     <div class="controls">
         <button class="btn-auto" onclick="sendMode('AUTOMATIC')" id="btn-auto">AUTOMATIC MODE</button>
         <button class="btn-manual" onclick="sendMode('MANUAL')" id="btn-manual">MANUAL MODE</button>
