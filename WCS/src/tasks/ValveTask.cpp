@@ -3,6 +3,8 @@
 void ValveTask::init(int period) {
     Task::init(period);
     MsgService.init();
+    valve->open(0);
+    MsgService.sendValveState(valve->getOpenPercentage());
     state = AUTOMATIC;
 }
 
@@ -12,8 +14,6 @@ ValveTask::State ValveTask::parseMode(String msgMode) {
     } else if (msgMode == "AUTOMATIC") {
         return AUTOMATIC;
     }
-    // fallback (opzionale)
-    return AUTOMATIC;
 }
 
 void ValveTask::tick() {

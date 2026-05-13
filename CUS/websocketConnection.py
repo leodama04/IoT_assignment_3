@@ -44,8 +44,8 @@ class WebsocketConnectionManager:
             mode = parsed["value"]
             if mode == Mode.AUTOMATIC:
                 self.state.set_mode(Mode.AUTOMATIC)
-            elif mode == Mode.REMOTE_MANUAL:
-                self.state.set_mode(Mode.REMOTE_MANUAL)
+            elif mode == Mode.MANUAL:
+                self.state.set_mode(Mode.MANUAL)
             await self.broadcast("mode", mode)  
     
     def handle_water_level_change(self, water_level: float):

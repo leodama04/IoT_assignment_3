@@ -96,11 +96,11 @@ function addLog(msg) {
 function updateMode(currentMode) {
     modeText.innerText = currentMode;
     if (currentMode === 'AUTOMATIC') {
-        btnAuto.disabled = true;
-        btnManual.disabled = false;
-    } else if (currentMode === 'REMOTE_MANUAL') {
+        btnAuto.disabled = true;    
+        btnManual.disabled = false;   
+    } else if (currentMode === 'MANUAL') {
         btnAuto.disabled = false;
-        btnManual.disabled = true;
+        btnManual.disabled = true;  
     }
 }
 
