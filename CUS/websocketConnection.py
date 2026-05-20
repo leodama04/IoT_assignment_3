@@ -62,4 +62,10 @@ class WebsocketConnectionManager:
             asyncio.create_task(self.broadcast("valve_state", valve_state))
         except RuntimeError:
             logger.warning("Could not create task for valve state change (event loop might be closing)")
+
+    def handle_mode_change(self, mode: Mode):
+        try:
+            asyncio.create_task(self.broadcast("mode", mode))
+        except RuntimeError:
+            logger.warning("Could not create task for mode state change (event loop might be closing)")
     

@@ -8,7 +8,7 @@ void ValveTask::init(int period) {
     state = AUTOMATIC;
 }
 
-ValveTask::State ValveTask::parseMode(String msgMode) {
+State ValveTask::parseMode(String msgMode) {
     if (msgMode == "MANUAL") {
         return MANUAL;
     } else if (msgMode == "AUTOMATIC") {
@@ -19,7 +19,7 @@ ValveTask::State ValveTask::parseMode(String msgMode) {
 void ValveTask::tick() {
     switch (state) {
         case MANUAL:
-            if (MsgService.isMsgAvailable()) {
+            if(MsgService.isMsgAvailable()) {
                 ParsedMsg msg = MsgService.handleMessage();
                 switch (msg.cmd) {
                     case CMD_MODE: {
@@ -49,7 +49,7 @@ void ValveTask::tick() {
             break;
 
         case AUTOMATIC:
-            if (MsgService.isMsgAvailable()) {
+            if(MsgService.isMsgAvailable()) {
                 ParsedMsg msg = MsgService.handleMessage();
                 switch (msg.cmd) {
                     case CMD_MODE: {
@@ -77,3 +77,4 @@ void ValveTask::tick() {
             break;
     }
 }
+

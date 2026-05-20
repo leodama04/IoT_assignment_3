@@ -24,16 +24,23 @@ class State():
     def set_callable(self, on_water_level_change: Callable[[], None],
                         on_mode_change: Callable[[], None] = None,
                         on_valve_state_change: Callable[[], None] = None,
-                        handle_valve_state_change: Callable[[], None] = None):
+                        handle_valve_state_change: Callable[[], None] = None,
+                        hande_mode_change : Callable[[], None] = None):
         self.on_water_level_change: Callable[[], None] = on_water_level_change
         self.on_mode_change: Callable[[], None] = on_mode_change
         self.on_valve_state_change: Callable[[], None] = on_valve_state_change
         self.handle_valve_state_change: Callable[[], None] = handle_valve_state_change
+        self.handle_mode_change: Callable[[], None] = hande_mode_change
 
     def set_mode(self, mode: Mode):
         logger.debug(f"Mode change. From [{self.mode}] to [{mode}]")
         self.on_mode_change(mode)
         self.mode = mode
+    
+    def handle_mode_change_from_serial(self, mode: Mode):
+        logger.debug(f"Mode change. From [{self.mode}] to [{mode}]")
+        self.mode = mode
+        self.handle_mode_change(mode)
 
     def automatic_monitor_water_level(self, level: float):
         current_time = time.time()

@@ -36,7 +36,7 @@ public:
   void init();  
   ParsedMsg handleMessage();
   void sendValveState(int valvePerc);
-  void sendMode();
+  void sendMode(String mode);
 };
 
 extern MsgServiceClass MsgService;

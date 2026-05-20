@@ -62,9 +62,16 @@ class SerialConnectionManager:
                         parsed = json.loads(data.decode())
                         if "valve_state" in parsed:
                             valve_value = parsed.get("valve_state")
-                            logger.info(f"Valve opened to {valve_value :.1f}%")
+                            logger.info(f"From Serial : Valve opened to {valve_value :.1f}%")
                             self.state.valve_state = valve_value
                             self.state.handle_valve_state_change(valve_value)
+                        elif "mode" in parsed:
+                            mode_value = parsed.get("mode")
+                            logger.info(f"From Serial : Mode changed to {mode_value}")
+                            if mode_value == Mode.AUTOMATIC:
+                                self.state.handle_mode_change_from_serial(Mode.AUTOMATIC)
+                            elif mode_value == Mode.MANUAL:
+                                self.state.handle_mode_change_from_serial(Mode.MANUAL)
                     except (ValueError, KeyError, json.JSONDecodeError):
                         logger.warning(f"Invalid serial payload: {data}")
             except asyncio.TimeoutError:

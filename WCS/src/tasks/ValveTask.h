@@ -12,8 +12,6 @@ public:
   void tick();
 
 private:
-  enum State { MANUAL, AUTOMATIC };
-  State state;
   State parseMode(String msgMode);
 };
 

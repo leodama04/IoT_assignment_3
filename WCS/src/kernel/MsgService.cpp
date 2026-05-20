@@ -75,8 +75,12 @@ void MsgServiceClass::sendValveState(int valvePerc) {
     MsgService.sendMsg(output);
 }
 
-void MsgServiceClass::sendMode() {
-    Serial.println("");
+void MsgServiceClass::sendMode(String mode) {
+    StaticJsonDocument<64> doc;
+    doc["mode"] = mode;
+    String output;
+    serializeJson(doc, output);
+    MsgService.sendMsg(output);
 }
 
 static ParsedMsg parseCommand(String content){

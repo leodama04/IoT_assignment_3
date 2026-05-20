@@ -3,8 +3,15 @@
 
 #include "Valve.h"
 #include <Arduino.h>
+#include "devices/Button.h"
+
+#define BUT_PIN 2
+#define MOT_PIN 9
 
 extern Valve* valve;
+extern Button* button;
+enum State { MANUAL, AUTOMATIC };
+extern State state;
 
 enum Command {
     CMD_MODE,
