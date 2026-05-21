@@ -5,4 +5,5 @@
 ServoMotorImpl* servoMotor = new ServoMotorImpl(MOT_PIN);
 Valve* valve = new Valve(servoMotor);
 Button* button = new ButtonImpl(BUT_PIN);
+Potentiometer* pot = new Potentiometer(POT_PIN);
 State state;

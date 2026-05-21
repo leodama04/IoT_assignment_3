@@ -13,6 +13,7 @@ class Mode(StrEnum):
     AUTOMATIC = "AUTOMATIC"
     MANUAL = "MANUAL"
     UNCONNECTED = "UNCONNECTED"
+    REMOTE_MANUAL = "REMOTE_MANUAL"
 
 class State():
     def __init__(self):

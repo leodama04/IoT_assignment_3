@@ -6,6 +6,7 @@ const statusElement = document.getElementById('status');
 const modeText = document.getElementById('mode-text');
 const btnAuto = document.getElementById('btn-auto');
 const btnManual = document.getElementById('btn-manual');
+const btnRemote = document.getElementById('btn-remote_manual');
 const waterLevelText = document.getElementById('water-level-text');
 const valveStateText = document.getElementById('valve-state-text');
 const valveBar = document.getElementById('valve-bar');
@@ -99,10 +100,17 @@ function updateMode(currentMode) {
     if (currentMode === 'AUTOMATIC') {
         btnAuto.disabled = true;
         btnManual.disabled = false;
+        btnRemote.disabled = false;
         valveControl.style.display = 'none';
     } else if (currentMode === 'MANUAL') {
         btnAuto.disabled = false;
         btnManual.disabled = true;
+        btnRemote.disabled = false;
+        valveControl.style.display = 'none';
+    } else if (currentMode === 'REMOTE_MANUAL') {
+        btnAuto.disabled = false;
+        btnManual.disabled = false;
+        btnRemote.disabled = true;
         valveControl.style.display = 'block';
     }
 }

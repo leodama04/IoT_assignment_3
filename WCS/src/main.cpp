@@ -3,10 +3,12 @@
 #include "kernel/Scheduler.h"
 #include "tasks/ValveTask.h"
 #include "tasks/ButtonTask.h"
+#include "tasks/ManualValveTask.h"
 
 Scheduler* scheduler = new Scheduler();
 ValveTask* valveTask = new ValveTask();
 ButtonTask* buttonTask = new ButtonTask();
+ManualValveTask* manualValveTask = new ManualValveTask();
 
 void setup() {
   Serial.begin(9600);
@@ -15,8 +17,10 @@ void setup() {
   scheduler->init(200);  
   valveTask->init(200);  
   buttonTask->init(20);
+  manualValveTask->init(100);
   scheduler->addTask(valveTask);
   scheduler->addTask(buttonTask);
+  scheduler->addTask(manualValveTask);
 }
 
 void loop() {

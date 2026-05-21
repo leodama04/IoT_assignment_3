@@ -18,5 +18,7 @@ void ButtonTask::tick() {
                 state = AUTOMATIC;
             }
             break;
-        }
+        case REMOTE_MANUAL:
+            break;
+    }
 }

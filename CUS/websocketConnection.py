@@ -46,6 +46,8 @@ class WebsocketConnectionManager:
                 self.state.set_mode(Mode.AUTOMATIC)
             elif mode == Mode.MANUAL:
                 self.state.set_mode(Mode.MANUAL)
+            elif mode == Mode.REMOTE_MANUAL:
+                self.state.set_mode(Mode.REMOTE_MANUAL)
             await self.broadcast("mode", mode)  
         elif parsed["type"] == "valve_state":
             perc = parsed["value"]

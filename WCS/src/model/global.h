@@ -4,13 +4,16 @@
 #include "Valve.h"
 #include <Arduino.h>
 #include "devices/Button.h"
+#include "devices/Pot.h"
 
 #define BUT_PIN 2
 #define MOT_PIN 9
+#define POT_PIN A0
 
 extern Valve* valve;
 extern Button* button;
-enum State { MANUAL, AUTOMATIC };
+extern Potentiometer* pot;
+enum State { MANUAL, AUTOMATIC, REMOTE_MANUAL };
 extern State state;
 
 enum Command {

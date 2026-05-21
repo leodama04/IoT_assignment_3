@@ -6,6 +6,7 @@
         
     .btn-auto { background: #3498db; color: white; }
     .btn-manual { background: #e67e22; color: white; }
+    .btn-remote_manual { background: #5ed614; color: white;}
         
     button:disabled { 
         background: #bdc3c7 !important; 
