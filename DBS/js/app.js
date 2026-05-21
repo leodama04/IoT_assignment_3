@@ -1,7 +1,6 @@
 const socketURL = "ws://localhost:8000/ws"; 
 let socket;
 
-const logElement = document.getElementById('log');
 const statusElement = document.getElementById('status');
 const modeText = document.getElementById('mode-text');
 const btnAuto = document.getElementById('btn-auto');
@@ -19,7 +18,6 @@ function initChart() {
     try {
         const canvas = document.getElementById('waterLevelChart');
         if (!canvas) {
-            addLog("Error: canvas element not found");
             return;
         }
         const ctx = canvas.getContext('2d');
@@ -68,7 +66,7 @@ function initChart() {
             }
         });
     } catch (error) {
-        addLog("Chart error: " + error.message);
+        console.error("Chart error: " + error.message);
     }
 }
 
@@ -86,12 +84,6 @@ function updateChart() {
     chart.data.labels = waterLevelData.map((_, index) => index + 1);
     chart.data.datasets[0].data = waterLevelData.map(d => d.level);
     chart.update();
-}
-
-function addLog(msg) {
-    const time = new Date().toLocaleTimeString();
-    logElement.innerHTML += `<div>[${time}] ${msg}</div>`;
-    logElement.scrollTop = logElement.scrollHeight;
 }
 
 function updateMode(currentMode) {
@@ -137,11 +129,9 @@ function connect() {
     socket = new WebSocket(socketURL);
     socket.onopen = () => {
         statusElement.innerHTML = 'Status: <span style="color: green;">Connected</span>';
-        addLog("Connection established.");
     };
     socket.onmessage = (event) => {
         const receivedData = JSON.parse(event.data);
-        addLog(`Server broadcast: ${event.data}`);
         if (receivedData.type === "mode") {
             updateMode(receivedData.value);
         } else if (receivedData.type === "water_level") {
@@ -151,14 +141,14 @@ function connect() {
         }
     };
     socket.onclose = () => {
-        statusElement.innerHTML = 'Status: <span style="color: red;">Disconnected</span>';
+        statusElement.innerHTML = 'Status: <span style="color: red;">NOT AVAIBLE</span>';
         btnAuto.disabled = true;
         btnManual.disabled = true;
-        addLog("Connection lost. Reconnecting...");
+        btnRemote.disabled = true;
         setTimeout(connect, 3000);
     };
     socket.onerror = () => {
-        addLog("WebSocket error.");
+        console.error("WebSocket error.");
     };
 }
 
@@ -166,7 +156,6 @@ function sendMode(mode) {
     if (socket && socket.readyState === WebSocket.OPEN) {
         const message = JSON.stringify({ type: "mode", value: mode });
         socket.send(message);
-        addLog(`Request sent: ${mode}`);
     }
 }
 
@@ -175,7 +164,6 @@ function sendValveState() {
     if (socket && socket.readyState === WebSocket.OPEN) {
         const message = JSON.stringify({ type: "valve_state", value: val });
         socket.send(message);
-        addLog(`Valve state sent: ${val}%`);
     }
 }
 

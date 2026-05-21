@@ -22,7 +22,7 @@
     .current-mode { margin-bottom: 15px; font-style: italic; color: #2c3e50; }
     .chart-container { width: 100%; max-width: 900px; margin-bottom: 40px; padding: 20px; background: white; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     #waterLevelChart { width: 100% !important; height: 350px !important; }
-    #log { width: 100%; max-width: 900px; height: 250px; background: #222; color: #0f0; padding: 10px; overflow-y: auto; border-radius: 5px; font-family: monospace; font-size: 12px; }
+
 
     .water-level { margin-bottom: 15px; font-style: italic; color: #2c3e50; }
 

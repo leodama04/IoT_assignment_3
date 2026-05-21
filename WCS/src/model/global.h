@@ -5,6 +5,7 @@
 #include <Arduino.h>
 #include "devices/Button.h"
 #include "devices/Pot.h"
+#include "LiquidCrystal_I2C.h"
 
 #define BUT_PIN 2
 #define MOT_PIN 9
@@ -13,6 +14,7 @@
 extern Valve* valve;
 extern Button* button;
 extern Potentiometer* pot;
+extern LiquidCrystal_I2C lcd;   
 enum State { MANUAL, AUTOMATIC, REMOTE_MANUAL };
 extern State state;
 
