@@ -168,7 +168,7 @@ graph LR
   - `/doc`: This report, system diagrams, and a demonstration video link
 
 
-- **Breadboard/circuit**: See `/doc/breadboard.png` for hardware layout
+- **Breadboard/circuit**: See `/doc/wcs_schema.png` and `/doc/tms_schema.png` for hardware layout
 
 ---
 
