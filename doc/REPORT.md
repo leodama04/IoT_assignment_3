@@ -167,13 +167,6 @@ graph LR
   - `/DBS`: Web app (HTML/JS/CSS), UI controls/data chart
   - `/doc`: This report, system diagrams, and a demonstration video link
 
-- **Languages Used:**  
-  - C++: 55.8%  
-  - Python: 27.3%  
-  - JavaScript: 9.3%  
-  - CSS: 3.2%  
-  - HTML: 3.1%  
-  - C: 1.3%
 
 - **Breadboard/circuit**: See `/doc/breadboard.png` for hardware layout
 
