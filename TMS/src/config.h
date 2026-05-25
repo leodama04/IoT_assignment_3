@@ -3,7 +3,7 @@
 
 //WIFI CONFIG
 #define WIFI_NAME "realme C75"
-#define WIFI_PW "zacca"
+#define WIFI_PW "zaccaroni"
 
 //MQTT CONFIG
 #define MQTT_SERVER_NAME "broker.mqtt-dashboard.com"
