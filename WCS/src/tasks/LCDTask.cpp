@@ -24,6 +24,7 @@ void LCDTask::tick() {
         case MANUAL:        printPadded(0, 0, "Mode: MANUAL",        20); break;
         case AUTOMATIC:     printPadded(0, 0, "Mode: AUTOMATIC",     20); break;
         case REMOTE_MANUAL: printPadded(0, 0, "Mode: REMOTE MANUAL", 20); break;
+        case UNCONNECTED: printPadded(0, 0, "Mode: UNCONNECTED", 20); break;
     }
 
     String valveStr = "Valve: " + String(currentPercent) + "%";

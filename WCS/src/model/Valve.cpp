@@ -15,7 +15,7 @@ void Valve::open(int percentage) {
     return;
   }
   this->openPercentage = percentage;
-  int angle = (openPercentage * 180) / 100;
+  int angle = (openPercentage * 90) / 100;
   servo->setPosition(angle);
 }
 

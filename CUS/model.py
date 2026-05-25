@@ -6,6 +6,7 @@ import time
 L1 = 25
 L2 = 50
 T1 = 5 
+T2 = 10
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,8 @@ class State():
         self.mode: Mode = Mode.AUTOMATIC
         self.water_level: float = 0
         self.l1_time: float = None  
-        self.valve_state: float = 0  
+        self.valve_state: float = 0
+        self.mode_before_disconnect: Mode = None 
 
     def set_callable(self, on_water_level_change: Callable[[], None],
                         on_mode_change: Callable[[], None] = None,

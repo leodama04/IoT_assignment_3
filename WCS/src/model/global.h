@@ -15,7 +15,7 @@ extern Valve* valve;
 extern Button* button;
 extern Potentiometer* pot;
 extern LiquidCrystal_I2C lcd;   
-enum State { MANUAL, AUTOMATIC, REMOTE_MANUAL };
+enum State { MANUAL, AUTOMATIC, REMOTE_MANUAL, UNCONNECTED };
 extern State state;
 
 enum Command {

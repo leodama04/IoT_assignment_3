@@ -20,5 +20,7 @@ void ButtonTask::tick() {
             break;
         case REMOTE_MANUAL:
             break;
+        case UNCONNECTED:
+            break;
     }
 }

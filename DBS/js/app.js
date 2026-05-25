@@ -104,6 +104,11 @@ function updateMode(currentMode) {
         btnManual.disabled = false;
         btnRemote.disabled = true;
         valveControl.style.display = 'block';
+    } else if (currentMode === 'UNCONNECTED') {
+        btnAuto.disabled = true;
+        btnManual.disabled = true;
+        btnRemote.disabled = true;
+        valveControl.style.display = 'none';
     }
 }
 

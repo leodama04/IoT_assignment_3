@@ -11,7 +11,8 @@ void Potentiometer::sync(){
 }
 
 int Potentiometer::getValue(){
-    return (int)(value / 1023.0 * 100);
+  int percent = (int)(value / 1023.0 * 100);
+  return (value >= 1015) ? 100 : percent;
 }
 
 void Potentiometer::updateSyncTime(long time){

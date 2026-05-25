@@ -15,7 +15,10 @@ State ValveTask::parseMode(String msgMode) {
         return AUTOMATIC;
     } else if (msgMode == "REMOTE_MANUAL") {
         return REMOTE_MANUAL;
+    } else if (msgMode == "UNCONNECTED") {
+        return UNCONNECTED;
     }
+    return AUTOMATIC;
 }
 
 void ValveTask::tick() {
@@ -34,10 +37,8 @@ void ValveTask::tick() {
                     case CMD_VALVE_STATE:
                         break;
                     case CMD_UNKNOWN:
-                        // ignora
                         break;
                     default:
-                        // per sicurezza
                         break;
                 }
             }
@@ -97,6 +98,29 @@ void ValveTask::tick() {
                         break;
                 }
             }
+            break;
+        
+        case UNCONNECTED:   
+            if(MsgService.isMsgAvailable()) {
+                ParsedMsg msg = MsgService.handleMessage();
+                switch (msg.cmd) {
+                    case CMD_MODE: {
+                        State msgState = parseMode(msg.value);
+                        if (msgState != state) {
+                            state = msgState;
+                        }
+                        break;
+                    }
+                    case CMD_VALVE_STATE:
+                        break;
+                    case CMD_UNKNOWN:
+                        break;
+                    default:
+                        break;
+                }
+            }
+            break;
+
     }
 }
 
